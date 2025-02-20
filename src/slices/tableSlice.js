@@ -20,6 +20,7 @@ const tableSlice = createSlice({
       //update the value of the current row and its children if there are any
       if (!parentId) {
         currentRow.value += (currentRow.value * input) / 100;
+        sanitize(currentRow);
         currentRow.variance =
           ((currentRow.value - currentRow.originalValue) /
             currentRow.originalValue) *
@@ -36,6 +37,7 @@ const tableSlice = createSlice({
       } else {
         //update the value of the current row and its parent row
         currentRow.value = currentRow.value + (currentRow.value * input) / 100;
+        sanitize(currentRow);
         currentRow.variance =
           ((currentRow.value - currentRow.originalValue) /
             currentRow.originalValue) *
@@ -60,6 +62,7 @@ const tableSlice = createSlice({
       if (!parentId) {
         const currentValue = currentRow.value;
         currentRow.value = currentRow.value + input;
+        sanitize(currentRow);
         currentRow.variance =
           ((currentRow.value - currentRow.originalValue) /
             currentRow.originalValue) *
@@ -75,6 +78,7 @@ const tableSlice = createSlice({
       } else {
         //update the value of the current row
         currentRow.value = currentRow.value + input;
+        sanitize(currentRow);
         currentRow.variance =
           ((currentRow.value - currentRow.originalValue) /
             currentRow.originalValue) *
@@ -104,6 +108,10 @@ const tableSlice = createSlice({
     },
   },
 });
+
+function sanitize(row) {
+  row.value = row.value < 0 ? 0 : row.value;
+}
 
 function updateParentValueAndVariance(parentRow) {
   parentRow.value = parentRow.children.reduce(
