@@ -19,8 +19,7 @@ const tableSlice = createSlice({
       }
       //update the value of the current row and its children if there are any
       if (!parentId) {
-        const currentValue = currentRow.value;
-        currentRow.value = currentRow.value + (currentRow.value * input) / 100;
+        currentRow.value += (currentRow.value * input) / 100;
         currentRow.variance =
           ((currentRow.value - currentRow.originalValue) /
             currentRow.originalValue) *
@@ -29,7 +28,7 @@ const tableSlice = createSlice({
         //update the value of the children
         if (currentRow.children) {
           currentRow.children.forEach((child) => {
-            child.value = (child.value / currentValue) * currentRow.value;
+            child.value += (child.value * input) / 100;
             child.variance =
               ((child.value - child.originalValue) / child.originalValue) * 100;
           });
@@ -42,14 +41,7 @@ const tableSlice = createSlice({
             currentRow.originalValue) *
           100;
 
-        parentRow.value = parentRow.children.reduce(
-          (acc, child) => acc + child.value,
-          0
-        );
-        parentRow.variance =
-          ((parentRow.value - parentRow.originalValue) /
-            parentRow.originalValue) *
-          100;
+        updateParentValueAndVariance(parentRow);
       }
     },
     handleAllocationValue: (state, action) => {
@@ -75,7 +67,7 @@ const tableSlice = createSlice({
         //update the value of the children
         if (currentRow.children) {
           currentRow.children.forEach((child) => {
-            child.value = (child.value / currentValue) * currentRow.value;
+            child.value += (child.value / currentValue) * input;
             child.variance =
               ((child.value - child.originalValue) / child.originalValue) * 100;
           });
@@ -89,20 +81,12 @@ const tableSlice = createSlice({
           100;
 
         //update the value of the parent row
-        parentRow.value = parentRow.children.reduce(
-          (acc, child) => acc + child.value,
-          0
-        );
-        parentRow.variance =
-          ((parentRow.value - parentRow.originalValue) /
-            parentRow.originalValue) *
-          100;
+        updateParentValueAndVariance(parentRow);
       }
     },
     initializeTable: (state, action) => {
       const data = JSON.parse(JSON.stringify(action.payload));
       data.rows.forEach((row) => {
-        
         if (row.children) {
           row.children.forEach((child) => {
             child.originalValue = child.value;
@@ -120,6 +104,16 @@ const tableSlice = createSlice({
     },
   },
 });
+
+function updateParentValueAndVariance(parentRow) {
+  parentRow.value = parentRow.children.reduce(
+    (acc, child) => acc + child.value,
+    0
+  );
+  parentRow.variance =
+    ((parentRow.value - parentRow.originalValue) / parentRow.originalValue) *
+    100;
+}
 
 export const {
   handleAllocationPercentage,
