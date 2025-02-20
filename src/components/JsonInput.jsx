@@ -2,9 +2,12 @@ import { useState } from "react";
 import styles from "./JsonInput.module.css";
 import { useDispatch } from "react-redux";
 import { initializeTable } from "../slices/tableSlice";
+import sampleSource from "../sampleSource";
 
 const JsonInput = () => {
-  const [jsonInput, setJsonInput] = useState("");
+  const [jsonInput, setJsonInput] = useState(
+    JSON.stringify(sampleSource, null, 2)
+  );
   const dispatch = useDispatch();
 
   const handleSubmit = () => {

@@ -3,7 +3,7 @@ export default {
     {
       "id": "electronics",
       "label": "Electronics",
-      "value": 1400, //this value needs to be calculated from the children values (800+700)
+      "value": 0, //this value needs to be calculated from the children values (800+700)
       "children": [
         {
           "id": "phones",
@@ -20,7 +20,7 @@ export default {
     {
       "id": "furniture",
       "label": "Furniture",
-      "value": 1000, //this need to be calculated from the children values (300+700)
+      "value": 0, //this need to be calculated from the children values (300+700)
       "children": [
         {
           "id": "tables",
