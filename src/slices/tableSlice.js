@@ -27,7 +27,7 @@ const tableSlice = createSlice({
           100;
 
         //update the value of the children
-        if (currentRow.children) {
+        if (currentRow.children?.length > 0) {
           currentRow.children.forEach((child) => {
             child.value += (child.value * input) / 100;
             child.variance =
@@ -68,7 +68,7 @@ const tableSlice = createSlice({
             currentRow.originalValue) *
           100;
         //update the value of the children
-        if (currentRow.children) {
+        if (currentRow.children?.length > 0) {
           currentRow.children.forEach((child) => {
             child.value += (child.value / currentValue) * input;
             child.variance =
@@ -97,9 +97,9 @@ const tableSlice = createSlice({
             child.variance = 0;
           });
         }
-        row.originalValue = row.children
+        row.originalValue = row.children?.length > 0
           ? row.children.reduce((acc, child) => acc + child.value, 0)
-          : row.value;
+          : row.value || 0;
         row.value = row.originalValue;
         row.variance = 0;
       });
