@@ -25,7 +25,7 @@ const TableFoot = ({ total }) => {
     <tfoot>
       <tr>
         <td>Total</td>
-        <td>{total}</td>
+        <td>{total?.toFixed(2)}</td>
       </tr>
     </tfoot>
   );
