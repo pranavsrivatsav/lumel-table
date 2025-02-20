@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./TableRow.module.css";
 
 const TableRow = ({
   label,
@@ -6,12 +7,15 @@ const TableRow = ({
   onAllocPercentClick,
   onAllocValClick,
   variance,
+  isChild,
 }) => {
   const [input, setInput] = useState("");
+  const tdClass = isChild ? styles.tdRight : null;
+
   return (
     <tr>
-      <td>{label}</td>
-      <td>{value.toFixed(2)}</td>
+      <td className={tdClass}>{label}</td>
+      <td className={tdClass}>{value.toFixed(2)}</td>
       <td>
         <input
           type="number"
@@ -39,7 +43,7 @@ const TableRow = ({
           Allocate val
         </button>
       </td>
-      <td>{variance.toFixed(2)}</td>
+      <td className={tdClass}>{variance.toFixed(2)}</td>
     </tr>
   );
 };

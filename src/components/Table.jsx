@@ -20,9 +20,21 @@ const TableHead = () => {
   );
 };
 
+const TableFoot = ({ total }) => {
+  return (
+    <tfoot>
+      <tr>
+        <td>Total</td>
+        <td>{total}</td>
+      </tr>
+    </tfoot>
+  );
+};
+
 const Table = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.table.data);
+  const total = data?.rows?.reduce((acc, row) => acc + row.value, 0);
 
   return (
     <table>
@@ -39,6 +51,7 @@ const Table = () => {
             {parentRow.children &&
               parentRow.children.map((childRow, childIndex) => (
                 <TableRow
+                  isChild
                   key={`child${index}-${childIndex}`}
                   {...childRow}
                   onAllocPercentClick={getAllocPercentClick(
@@ -51,6 +64,7 @@ const Table = () => {
           </>
         ))}
       </tbody>
+      <TableFoot total={total} />
     </table>
   );
 
